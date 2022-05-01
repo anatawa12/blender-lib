@@ -61,6 +61,7 @@ def select_objects(objs):
         obj.select_set(True)
     if len(objs) != 0:
         bpy.context.view_layer.objects.active = objs[0]
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def objects_from_names(names: List[str]) -> List[Object]:
