@@ -59,6 +59,8 @@ def select_objects(objs):
     bpy.ops.object.select_all(action='DESELECT')
     for obj in objs:
         obj.select_set(True)
+    if len(objs) != 0:
+        bpy.context.view_layer.objects.active = objs[0]
 
 
 def objects_from_names(names: List[str]) -> List[Object]:
