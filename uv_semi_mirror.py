@@ -16,7 +16,7 @@
 from typing import Optional, cast, Dict, List, Callable, FrozenSet, Set, Tuple, Iterable, TypeVar, Container, Sequence
 
 from bpy.types import Object, Mesh, VertexGroup, MeshVertex, VertexGroupElement, MeshPolygon, UVLoopLayers, MeshUVLoop
-from .utils import Axis
+from .utils import Axis, flip_name
 
 
 def mirror_uv(
@@ -29,6 +29,7 @@ def mirror_uv(
         obj_ignore_axis: Optional[Axis] = None,  # if some axis should be ignored on homologous vertex search
         uv_mirror_axis: Optional[Axis] = None,  # None if not mapped
         uv_mirror_origin: float = 0.5,  # mirror origin
+        mirror_vertex_group: bool = False,
 ):
     dst_obj: Object = dst_obj_in if dst_obj_in is not None else src_obj
     src_mesh = cast(Mesh, src_obj.data)
@@ -70,6 +71,24 @@ def mirror_uv(
                     cast(range, dst_poly.loop_indices),
                     _offset([i for i in reversed(cast(range, src_poly.loop_indices))], offset)):
                 dst_uv_layer[dst_i].uv = _invert_uv(src_uv_layer[src_i].uv, uv_mirror_axis, uv_mirror_origin)
+    if mirror_vertex_group:
+        for i, dst_vertex in enumerate(dst_vertices):
+            src_vertex_index = idx_mapping.get(i)
+            if src_vertex_index is None:
+                continue
+            src_vertex = src_vertices[idx_mapping[i]]
+            for dst_group in cast(Iterable[VertexGroupElement], dst_vertex.groups):
+                cast(List[VertexGroup], dst_obj.vertex_groups)[dst_group.group].remove([dst_vertex.index])
+
+            for src_group in cast(Iterable[VertexGroupElement], src_vertex.groups):
+                src_group_name = cast(List[VertexGroup], src_obj.vertex_groups)[src_group.group].name
+                dst_group_name_candidates = _flip_name_candidates(src_group_name)
+                for dst_group_name_candidate in dst_group_name_candidates:
+                    dst_group_candidate = cast(Dict[str, VertexGroup], src_obj.vertex_groups)\
+                        .get(dst_group_name_candidate)
+                    if dst_group_candidate is not None:
+                        dst_group_candidate.add([dst_vertex.index], weight=src_group.weight, type="ADD")
+                        break
 
 
 def _collect_polygons(
@@ -218,3 +237,11 @@ def _offset(s: Sequence[E], offset: int) -> List[E]:
     if offset == 0 and isinstance(s, list):
         return s
     return [*s[offset:], *s[0:offset]]
+
+
+def _flip_name_candidates(name: str) -> List[str]:
+    flipped = flip_name(name)
+    if flipped != name:
+        return [flipped, name]
+    else:
+        return [name]
