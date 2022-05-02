@@ -124,7 +124,3 @@ def merge_by_distance(obj: Object, threshold=0.0001):
     bpy.ops.mesh.select_all(action='SELECT')
     bpy.ops.mesh.remove_doubles(threshold=threshold)
     bpy.ops.object.mode_set(mode='OBJECT')
-
-
-if __name__ == "__main__":
-    main()

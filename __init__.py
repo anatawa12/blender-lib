@@ -47,7 +47,7 @@ def unregister():
 
 def version_check(v: int):
     supported_minimum = 1
-    if supported_minimum <= v <= bl_info["anatawa12_library_selector"]:
+    if supported_minimum <= v <= bl_info["anatawa12_library_selector"]:  # type: ignore
         return
     import bpy
     bpy.context.window_manager.popup_menu(
