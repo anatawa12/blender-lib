@@ -17,9 +17,11 @@
 # noinspection PyUnresolvedReferences
 from .uv_semi_mirror import mirror_uv
 # noinspection PyUnresolvedReferences
-from .utils import Axis
+from .utils import Axis, UVRegion
 # noinspection PyUnresolvedReferences
 from .export import copy_join, export_for_unity, freeze_modifiers, merge_by_distance
+# noinspection PyUnresolvedReferences
+from .materials import merge_materials, remove_material, remove_face_of_materials
 
 bl_info = {
     "name": "anatawa12's library",

@@ -30,6 +30,20 @@ class Axis(IntEnum):
         return v
 
 
+class UVRegion:
+    def __init__(self, u_begin: float, v_begin: float, u_size: float, v_size: float):
+        self.u_begin: float = u_begin
+        self.v_begin: float = v_begin
+        self.u_size: float = u_size
+        self.v_size: float = v_size
+
+    def fit_from_1x1(self, u: float, v: float) -> Tuple[float, float]:
+        return u * self.u_size + self.u_begin, v * self.v_size + self.v_begin
+
+    def fit_to_1x1(self, u: float, v: float) -> Tuple[float, float]:
+        return (u - self.u_begin) / self.u_size, (v - self.v_begin) / self.v_size
+
+
 def vertex_eq(v1: List[float], v2: List[float], limit: float = 0.0001) -> bool:
     if len(v1) != len(v2):
         return False
