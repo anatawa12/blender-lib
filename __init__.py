@@ -24,6 +24,7 @@ from .export import copy_join, export_for_unity, freeze_modifiers, merge_by_dist
 from .materials import merge_materials, remove_material, remove_face_of_materials
 # noinspection PyUnresolvedReferences
 from .faces import remove_face_of_group
+from .output_file_chooser import ask_export
 
 bl_info = {
     "name": "anatawa12's library",
