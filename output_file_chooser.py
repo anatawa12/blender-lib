@@ -8,6 +8,8 @@ from bpy.props import StringProperty, BoolProperty, EnumProperty
 from bpy.types import Operator, Context
 import uuid
 
+from .globals import context
+
 
 def ask_export(
         callback: typing.Callable[[str], None],
@@ -39,4 +41,4 @@ def ask_export(
             bpy.utils.unregister_class(Exporter)
 
     bpy.utils.register_class(Exporter)
-    getattr(bpy.ops.anatawa12lib, idname)('INVOKE_DEFAULT')
+    getattr(bpy.ops.anatawa12lib, idname)(context(), 'INVOKE_DEFAULT')

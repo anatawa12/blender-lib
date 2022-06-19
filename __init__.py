@@ -15,6 +15,8 @@
 
 
 # noinspection PyUnresolvedReferences
+from .globals import context, set_context
+# noinspection PyUnresolvedReferences
 from .uv_semi_mirror import mirror_uv
 # noinspection PyUnresolvedReferences
 from .utils import Axis, UVRegion

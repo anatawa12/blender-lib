@@ -21,6 +21,7 @@ import math
 import mathutils
 
 from bpy.types import Object, Collection, CollectionObjects
+from .globals import context
 
 
 def export_for_unity(objs: List[Object], path: str):
@@ -52,16 +53,16 @@ def link_to_collection(objs, collection: Collection = bpy.context.scene.collecti
 def merge_objects(objs):
     select_objects(objs)
     bpy.context.view_layer.objects.active = objs[0]
-    bpy.ops.object.join()
+    bpy.ops.object.join(context())
 
 
 def select_objects(objs):
-    bpy.ops.object.select_all(action='DESELECT')
+    bpy.ops.object.select_all(context(), action='DESELECT')
     for obj in objs:
         obj.select_set(True)
     if len(objs) != 0:
         bpy.context.view_layer.objects.active = objs[0]
-    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.mode_set(context(), mode='OBJECT')
 
 
 def objects_from_names(names: List[str]) -> List[Object]:
@@ -72,6 +73,7 @@ def rotate_on_x(objs: List[Object], theta: float) -> None:
     select_objects(objs)
     bpy.context.scene.tool_settings.transform_pivot_point = 'BOUNDING_BOX_CENTER'
     bpy.ops.transform.rotate(
+        context(),
         value=theta,
         orient_axis='X',
         orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)),  # type: ignore
@@ -102,6 +104,7 @@ def hide_all(objs):
 def export_fbx(objs, path):
     select_objects(objs)
     bpy.ops.export_scene.fbx(
+        context(),
         use_selection=True,
         filepath=path,
         apply_scale_options='FBX_SCALE_ALL',
@@ -115,12 +118,12 @@ def export_fbx(objs, path):
 def freeze_modifiers(obj: Object, modifiers: typing.Iterable[str]):
     select_objects([obj])
     for m in modifiers:
-        bpy.ops.object.modifier_apply(modifier=m)
+        bpy.ops.object.modifier_apply(context(), modifier=m)
 
 
 def merge_by_distance(obj: Object, threshold=0.0001):
     select_objects([obj])
-    bpy.ops.object.mode_set(mode='EDIT')
-    bpy.ops.mesh.select_all(action='SELECT')
-    bpy.ops.mesh.remove_doubles(threshold=threshold)
-    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.mode_set(context(), mode='EDIT')
+    bpy.ops.mesh.select_all(context(), action='SELECT')
+    bpy.ops.mesh.remove_doubles(context(), threshold=threshold)
+    bpy.ops.object.mode_set(context(), mode='OBJECT')

@@ -6,6 +6,7 @@ from bpy.types import Object, Mesh, MeshPolygon, Material, IDMaterials, BlendDat
 
 from .utils import UVRegion
 from .export import select_objects
+from .globals import context
 
 def remove_face_of_group(
         obj: Object,
@@ -36,6 +37,6 @@ def remove_face_of_group(
 
     # remove selected faces
     select_objects([obj])
-    bpy.ops.object.mode_set_with_submode(mode='EDIT', mesh_select_mode={'FACE'})
-    bpy.ops.mesh.delete(type='FACE')
-    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.mode_set_with_submode(context(), mode='EDIT', mesh_select_mode={'FACE'})
+    bpy.ops.mesh.delete(context(), type='FACE')
+    bpy.ops.object.mode_set(context(), mode='OBJECT')

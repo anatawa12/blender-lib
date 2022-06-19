@@ -5,6 +5,7 @@ import bpy
 from bpy.types import Object, Mesh, MeshPolygon, Material, IDMaterials, BlendDataMaterials, MeshUVLoop, UVLoopLayers
 
 from .utils import UVRegion
+from .globals import context
 
 
 def remove_face_of_materials(
@@ -30,9 +31,9 @@ def remove_face_of_materials(
         poly.select = True
         pass
 
-    bpy.ops.object.mode_set_with_submode(mode='EDIT', mesh_select_mode={'FACE'})
-    bpy.ops.mesh.delete(type='FACE')
-    bpy.ops.object.mode_set(mode='OBJECT')
+    bpy.ops.object.mode_set_with_submode(context(), mode='EDIT', mesh_select_mode={'FACE'})
+    bpy.ops.mesh.delete(context(), type='FACE')
+    bpy.ops.object.mode_set(context(), mode='OBJECT')
     remove_material(mesh, remove_mat)
 
 

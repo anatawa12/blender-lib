@@ -18,6 +18,7 @@ from typing import List, cast
 import bpy
 from bpy.types import Mesh, MeshVertex
 from .utils import Axis
+from .globals import context
 
 
 def vertex_eq(v1: List[float], v2: List[float], limit: float = 0.001) -> bool:
@@ -37,7 +38,7 @@ mesh: Mesh = object.data
 axis: Axis = Axis.X
 select_both = True
 
-bpy.ops.object.mode_set(mode="OBJECT")
+bpy.ops.object.mode_set(context(), mode="OBJECT")
 
 for v1 in cast(List[MeshVertex], mesh.vertices):
     for v2 in cast(List[MeshVertex], mesh.vertices):
@@ -50,4 +51,4 @@ for v1 in cast(List[MeshVertex], mesh.vertices):
             else:
                 v2.select = True
 
-bpy.ops.object.mode_set(mode="EDIT")
+bpy.ops.object.mode_set(context(), mode="EDIT")
