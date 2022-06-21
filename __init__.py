@@ -30,7 +30,7 @@ bl_info = {
     "name": "anatawa12's library",
     "author": "anatawa12",
     "version": (0, 0),
-    "blender": (2, 93, 0),
+    "blender": (3, 2, 0),
     "location": "",
     "description": "anatawa12's library",
     "warning": "",
