@@ -44,6 +44,28 @@ class UVRegion:
         return (u - self.u_begin) / self.u_size, (v - self.v_begin) / self.v_size
 
 
+class ModifyAndRollback:
+    modifications: List[Tuple[object, str, any]] = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.restore()
+        return False
+
+    def add_modify(self, obj: object, name: str, value: any):
+        old = getattr(obj, name)
+        setattr(obj, name, value)
+        self.modifications.append((obj, name, old))
+
+    def restore(self):
+        self.modifications.reverse()
+        for modification in self.modifications:
+            setattr(modification[0], modification[1], modification[2])
+        self.modifications = []
+
+
 def vertex_eq(v1: List[float], v2: List[float], limit: float = 0.0001) -> bool:
     if len(v1) != len(v2):
         return False

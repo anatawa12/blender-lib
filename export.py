@@ -101,7 +101,8 @@ def hide_all(objs):
 
 def export_fbx(objs, path):
     select_objects(objs)
-    bpy.ops.export_scene.fbx(
+    from .our_export_fbx_bin import export_fbx
+    export_fbx(
         use_selection=True,
         filepath=path,
         apply_scale_options='FBX_SCALE_ALL',
@@ -109,6 +110,7 @@ def export_fbx(objs, path):
         use_mesh_modifiers=True,
         mesh_smooth_type='EDGE',
         add_leaf_bones=False,
+        time="1970-01-01T00:00:00+00:00:00",
     )
 
 
