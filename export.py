@@ -24,13 +24,6 @@ from bpy.types import Object, Collection, CollectionObjects
 
 
 def export_for_unity(objs: List[Object], path: str):
-    rotate_on_x(objs, -math.pi / 2)
-
-    for o in objs:
-        apply_transform(o)
-
-    rotate_on_x(objs, math.pi / 2)
-
     export_fbx(objs, path)
 
 
@@ -103,13 +96,44 @@ def export_fbx(objs, path):
     select_objects(objs)
     from .our_export_fbx_bin import export_fbx
     export_fbx(
-        use_selection=True,
+        # General
         filepath=path,
-        apply_scale_options='FBX_SCALE_ALL',
+        # Include
+        use_selection=True,
+        use_visible=False,
+        use_active_collection=False,
         object_types={'ARMATURE', 'MESH'},
-        use_mesh_modifiers=True,
-        mesh_smooth_type='EDGE',
-        add_leaf_bones=False,
+        use_custom_props=False,
+        # Transform
+        global_scale=1.0,
+        apply_scale_options='FBX_SCALE_ALL',
+        axis_forward='-Z',
+        axis_up='Y',
+        apply_unit_scale=True,  # Apply Unit
+        use_space_transform=True,  # Use Space Transform
+        bake_space_transform=True,  # Apply Transform
+        # Geometry
+        mesh_smooth_type='OFF',
+        use_subsurf=False,
+        use_mesh_modifiers=True,  # Apply Modifiers
+        use_mesh_edges=False,  # Loose Edges
+        use_triangles=False,  # Triangulate Faces
+        use_tspace=False,  # Tangent Space
+        # Armature
+        primary_bone_axis='Y',
+        secondary_bone_axis='X',
+        armature_nodetype='NULL',  # Armature FBXNode Type
+        use_armature_deform_only=False,  # Only Deform Bones
+        add_leaf_bones=False,  # Add Leaf Bones
+        # Bake Animation
+        bake_anim=True,
+        bake_anim_use_all_bones=True,  # Key All Bones
+        bake_anim_use_nla_strips=True,  # NLA Strips
+        bake_anim_use_all_actions=True,  # All Actions
+        bake_anim_force_startend_keying=True,  # Force Start/End Keying
+        bake_anim_step=1.0,  # Sampling Rate
+        bake_anim_simplify_factor=1.0,  # Simplify
+        # Anatawa12's part
         time="1970-01-01T00:00:00+00:00:00",
     )
 
