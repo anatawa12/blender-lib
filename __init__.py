@@ -21,7 +21,7 @@ from .utils import Axis, UVRegion
 # noinspection PyUnresolvedReferences
 from .export import copy_join, export_for_unity, freeze_modifiers, merge_by_distance
 # noinspection PyUnresolvedReferences
-from .materials import merge_materials, remove_material, remove_face_of_materials
+from .materials import merge_materials, remove_material, remove_face_of_materials, simple_merge_materials
 # noinspection PyUnresolvedReferences
 from .faces import remove_face_of_group
 from .output_file_chooser import ask_export

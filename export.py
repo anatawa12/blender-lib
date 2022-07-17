@@ -21,6 +21,7 @@ import math
 import mathutils
 
 from bpy.types import Object, Collection, CollectionObjects
+from .utils import select_objects
 
 
 def export_for_unity(objs: List[Object], path: str):
@@ -46,15 +47,6 @@ def merge_objects(objs):
     select_objects(objs)
     bpy.context.view_layer.objects.active = objs[0]
     bpy.ops.object.join()
-
-
-def select_objects(objs):
-    bpy.ops.object.select_all(action='DESELECT')
-    for obj in objs:
-        obj.select_set(True)
-    if len(objs) != 0:
-        bpy.context.view_layer.objects.active = objs[0]
-    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def objects_from_names(names: List[str]) -> List[Object]:

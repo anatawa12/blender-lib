@@ -4,7 +4,7 @@ from typing import Dict, cast, List, Optional
 import bpy
 from bpy.types import Object, Mesh, MeshPolygon, Material, IDMaterials, BlendDataMaterials, MeshUVLoop, UVLoopLayers
 
-from .utils import UVRegion
+from .utils import UVRegion, select_objects
 
 
 def remove_face_of_materials(
@@ -84,3 +84,27 @@ def remove_material(mesh: Mesh, name: str):
         if mat.name == name:
             mats.pop(index = index)
             return
+
+
+def simple_merge_materials(obj: Object, merge_from: List[str], merge_to: str):
+    select_objects([obj])
+    bpy.ops.object.mode_set(mode='EDIT')
+
+    bpy.ops.mesh.select_all(action='DESELECT')
+    bpy.ops.mesh.select_mode(use_extend=False, use_expand=False, type='FACE')
+
+    from_indices = [obj.material_slots[mat_name].slot_index for mat_name in merge_from]
+    to_index = obj.material_slots[merge_to].slot_index
+
+    for mat_indices in from_indices:
+        bpy.context.object.active_material_index = mat_indices
+        bpy.ops.object.material_slot_select()
+
+    bpy.context.object.active_material_index = to_index
+    bpy.ops.object.material_slot_assign()
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+    for mat_indices in from_indices:
+        bpy.context.object.active_material_index = mat_indices
+        bpy.ops.object.material_slot_select()
