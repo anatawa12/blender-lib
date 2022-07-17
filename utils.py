@@ -148,3 +148,14 @@ else:
                 return f"{name[:idx]}{replace}{name[idx+4:]}{number}"
 
         return f"{name}{number}"
+
+
+def find_enable_addon(name):
+    from importlib import import_module
+    import addon_utils
+
+    modules = [m for m in addon_utils.modules() if m.bl_info.get("name") == name]
+    if len(modules) == 0:
+        raise Exception("plugin named %r not found" % name)
+
+    return addon_utils.enable(modules[0].__name__)

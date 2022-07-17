@@ -58,3 +58,9 @@ def version_check(v: int):
     bpy.context.window_manager.popup_menu(
         (lambda s, c: s.layout.label(text="Please install anatawa12's blender library version %d" % v)),
         title="Error", icon='ERROR')
+
+
+def enable_cats_blender_plugin():
+    from .utils import find_enable_addon
+    find_enable_addon('Cats Blender Plugin')
+
