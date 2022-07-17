@@ -38,7 +38,7 @@ bl_info = {
     "wiki_url": "",
     "tracker_url": "",
     "category": "Object",
-    "anatawa12_library_selector": 5,
+    "anatawa12_library_selector": 6,
 }
 
 
