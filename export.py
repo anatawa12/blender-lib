@@ -21,32 +21,12 @@ import math
 import mathutils
 
 from bpy.types import Object, Collection, CollectionObjects
-from .utils import select_objects
+from .utils import select_objects, copy_join, link_to_collection, merge_objects
+from .freeze_modifiers import freeze_modifiers
 
 
 def export_for_unity(objs: List[Object], path: str):
     export_fbx(objs, path)
-
-
-def copy_join(objs: List[Object], name: str) -> Object:
-    new_objs: List[Object] = cast(List[Object], [obj.copy() for obj in objs])
-    new_objs[0].data = new_objs[0].data.copy()
-    link_to_collection(new_objs, collection=cast(List[Collection], objs[0].users_collection)[0])
-    new_objs[0].name = name
-    merge_objects(new_objs)
-    new_objs[0].parent = objs[0].parent
-    return new_objs[0]
-
-
-def link_to_collection(objs, collection: Collection = bpy.context.scene.collection):
-    for obj in objs:
-        cast(CollectionObjects, collection.objects).link(obj)
-
-
-def merge_objects(objs):
-    select_objects(objs)
-    bpy.context.view_layer.objects.active = objs[0]
-    bpy.ops.object.join()
 
 
 def objects_from_names(names: List[str]) -> List[Object]:
@@ -63,6 +43,14 @@ def rotate_on_x(objs: List[Object], theta: float) -> None:
         constraint_axis=[True, False, False],
         mirror=True,
     )
+
+
+def symmetrize_armature(obj: Object):
+    select_objects([obj])
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.armature.select_all(action='SELECT')
+    bpy.ops.armature.symmetrize()
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 def apply_transform(obj: Object):
@@ -128,12 +116,6 @@ def export_fbx(objs, path):
         # Anatawa12's part
         time="1970-01-01T00:00:00+00:00:00",
     )
-
-
-def freeze_modifiers(obj: Object, modifiers: typing.Iterable[str]):
-    select_objects([obj])
-    for m in modifiers:
-        bpy.ops.object.modifier_apply(modifier=m)
 
 
 def merge_by_distance(obj: Object, threshold=0.0001):

@@ -19,7 +19,7 @@ from .uv_semi_mirror import mirror_uv
 # noinspection PyUnresolvedReferences
 from .utils import Axis, UVRegion
 # noinspection PyUnresolvedReferences
-from .export import copy_join, export_for_unity, freeze_modifiers, merge_by_distance
+from .export import copy_join, export_for_unity, freeze_modifiers, merge_by_distance, symmetrize_armature
 # noinspection PyUnresolvedReferences
 from .materials import merge_materials, remove_material, remove_face_of_materials, simple_merge_materials
 # noinspection PyUnresolvedReferences
@@ -38,7 +38,7 @@ bl_info = {
     "wiki_url": "",
     "tracker_url": "",
     "category": "Object",
-    "anatawa12_library_selector": 6,
+    "anatawa12_library_selector": 7,
 }
 
 
