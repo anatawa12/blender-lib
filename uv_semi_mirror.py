@@ -135,7 +135,9 @@ def _make_vertex_mapping(
 
         if best_idx in idx_mapping:
             raise Exception(
-                f"nearest vertex duplicated: #{best_idx} is for #{src_vertex_idx} and #{idx_mapping[best_idx]}")
+                f"nearest vertex duplicated: #{best_idx} (#{dst_vertices[best_idx].co}) is for "
+                f"#{src_vertex_idx} (#{src_vertices[src_vertex_idx].co}) and "
+                f"#{idx_mapping[best_idx]} (#{src_vertices[idx_mapping[best_idx]].co})")
         idx_mapping[best_idx] = src_vertex_idx
     return idx_mapping
 

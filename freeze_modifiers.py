@@ -28,6 +28,17 @@ def freeze_modifiers(obj: Object, modifiers: typing.Iterable[str]):
 
             delete_objects([obj_tmp])
 
+        tmp_name = obj.name
+        tmp_data_name = obj.data.name
+        result.name = tmp_name + '.tmp'
+
+        obj.data = result.data
+        obj.data.name = tmp_data_name
+
+        for x in modifiers:
+            obj.modifiers.remove(obj.modifiers[x])
+
+        delete_objects([result])
         pass
 
 

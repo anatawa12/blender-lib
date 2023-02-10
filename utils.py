@@ -188,7 +188,7 @@ def copy_join(objs: List[Object], name: str) -> Object:
     link_to_collection(new_objs, collection=cast(List[Collection], objs[0].users_collection)[0])
     new_objs[0].name = name
     merge_objects(new_objs)
-    new_objs[0].parent = objs[0].parent
+    #new_objs[0].parent = objs[0].parent
     return new_objs[0]
 
 
